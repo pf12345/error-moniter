@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Logs</title>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <style>
+      html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+input, textarea {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+a,a:hover,a:active,a:visited,a:link,a:focus{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+    outline:none;
+    background: none;
+    text-decoration: none;
+    color: #3194d0;
+}
+
+li {
+  margin: 15px;
+  padding: 15px;
+  background: #fcfcfc;
+  border: 1px solid #ccc;
+}
+li > div {
+  display: flex;
+}
+li > div > span {
+  width: 100px;
+  display: inline-block;
+}
+p {
+  padding: 5px;
+  line-height: 1.4;
+  word-spacing: normal;
+    word-wrap: break-word;
+    white-space: normal;
+}
+pre {
+  display: inline-flex;
+  min-width: 120px;
+}
+.hljs, pre {
+    color: #657b83;
+    -webkit-text-size-adjust: none;
+}
+pre code {
+  background: #f6f6f6;
+  padding: 10px !important;
+}
+    </style>
+  </head>
+  <body>
+    <ul>
+      <% for(var i = data.length - 1, _i = 0; i >= _i; i--) {%>
+        <li>
+            <div>
+              <pre><p>错误时间：</p></pre>
+              <pre>
+                  <p><%= data[i] ? data[i].created : '' %></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>错误页面：</p></pre>
+              <pre>
+                  <p><a target="_blank" href="<%= data[i] ? data[i].url : '' %>"><%= data[i] ? data[i].url : '' %></a></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>错误来源：</p></pre>
+              <pre>
+                  <p><%= data[i] ? data[i].from : '' %></a></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>错误文件：</p></pre>
+              <pre>
+                  <p><a target="_blank" href="<%= data[i] ? data[i].path : '' %>"><%= data[i] ? data[i].path : '' %></a></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>错误信息：</p></pre>
+              <pre>
+                  <p><code><%= data[i] ? data[i].stack : '' %></code></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>浏览器信息：</p></pre>
+              <pre>
+                  <p><code><%= data[i] ? data[i]['navigator.userAgent'] : '' %></code></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>错误定位：</p></pre>
+              <pre>
+                  <p><code><%= data[i] && data[i].ret ?  JSON.stringify(data[i].ret) : '' %></code></p>
+              </pre>
+            </div>
+            <div>
+              <pre><p>更多错误：</p></pre>
+              <pre>
+                  <p><code><%= data[i] ? data[i].msg : '' %></code></p>
+              </pre>
+              
+            </div>
+            <%if(data[i].evtMoniter && data[i].evtMoniter.length){%>
+            <div>
+              <pre><p>操作跟踪：</p></pre>
+              <pre style="display: grid;">
+                <%for(var j = 0, _j = data[i].evtMoniter.length - 1; j <= _j; _j--) {%>
+                  <p><code><%= JSON.stringify(data[i].evtMoniter[_j]) %></code></p>
+                <%}%>  
+              </pre>
+              
+            </div>
+            <%}%>
+            
+        </li>
+        
+      <%}%>
+    </ul>
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="/public/js/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+      $(document).ready(function() {
+              $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+              });
+            });
+    </script>
+  </body>
+</html>
