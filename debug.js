@@ -1,8 +1,8 @@
-import config from './../config';
+const ERROR_URL = 'http://localhost:8010/webErrorLog'
 import $ from 'jquery';
 
 const errorData = {
-	systemErrorUrl: `${config.errorLogUrl}/saveWebSysErrorLog`, //错误上报地址
+	systemErrorUrl: `${ERROR_URL}/saveWebSysErrorLog`, //错误上报地址
 	proxyConsole: true, //是否代理console下所有方法
 	errorMessage: { // 错误日志信息
 		msg: '',
@@ -17,7 +17,7 @@ const errorData = {
 
 const evtMoniterTypes = ['click', 'tap', 'input']; // 需要跟踪的用户事件
 
-const isPro = process.env.NODE_ENV === 'production'; // production or development
+const isPro = true; // production or development
 
 const debug = {
 	user: {
@@ -104,13 +104,13 @@ const debug = {
 					self.sendSystermReport(_error);
 				} catch(e) {}
 
-				f_error.call(window, msg, url, line, col, error);
-				// console.log(_error);
+				f_error && f_error.call(window, msg, url, line, col, error);
+				console.log(_error);
 			}
 		} else {
 			window.onError = function(msg, url, line, col, error) {
 				console.log('windowError');
-				f_error.call(window, msg, url, line, col, error);
+				f_error && f_error.call(window, msg, url, line, col, error);
 			}
 		}
 		return this;
@@ -141,7 +141,7 @@ const debug = {
 		} else {
 			console.error = function(error) {
 				console.log('consoleError');
-				f_error.call(window, error);
+				f_error && f_error.call(window, error);
 			}
 		}
 		return this;

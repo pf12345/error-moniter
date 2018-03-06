@@ -22,7 +22,7 @@ router.get('/saveWebSysErrorLog', function(req, res) {
 		line = report.line;
 		column = report.col;
 		mapPath = (fileName = report.path ? ((_arr = report.path.split('/')) && _arr[_arr.length - 1]) : '') 
-				&& resolve('./../dist/'+(report.path.match('chunk') ? 'chunk/' : '')+fileName+'.map'),
+				&& resolve('./../dist/static/js'+(report.path.match('chunk') ? 'chunk/' : '')+fileName+'.map'),
 		logPath = resolve('./../logs/' + moment().format('YYYY-MM-DD') + '.js'),
 		logDirPath = resolve('./../logs/');
 	}catch(e) {
@@ -63,6 +63,9 @@ router.get('/saveWebSysErrorLog', function(req, res) {
 				report.ret = ret;
 				// 是否存在日志文件
 				return fileExist(logPath);
+			}, function() {
+				// 是否存在日志文件
+				return fileExist(logPath);
 			}).then(function() {
 				var w_data = new Buffer(JSON.stringify(report));
 				// 存在日志文件，直接在文件后继续添加
@@ -72,8 +75,7 @@ router.get('/saveWebSysErrorLog', function(req, res) {
 					}
 				})
 			}, function(exists) {
-				if(exists != undefined) {
-					var w_data = new Buffer(JSON.stringify(report));
+				var w_data = new Buffer(JSON.stringify(report));
 					// 不存在日志文件，直接创建文件后添加
 					return new Promise(function(resolve, reject) {
 						fs.writeFile(logPath, w_data, {flag: 'a'}, function (err) {
@@ -84,7 +86,6 @@ router.get('/saveWebSysErrorLog', function(req, res) {
 							}
 						})
 					})
-				}
 			}).then(function() {
 				// 检测logs文件夹目录信息
 				return readLogsDir(resolve('./../logs/'));
@@ -183,7 +184,7 @@ var fileExist = function(path, cb) {
 					resolve(exists);
 				} else {
 					// console.log('no file: ' + path);
-					reject(exists);
+					reject();
 				}
 			})
 		} else {
