@@ -4,7 +4,7 @@ var router = express.Router();
 var moment = require('moment');
 var fs = require('fs');
 var request = require('request');
-var sourcemap = require('./../public/js/source-map.js');
+var sourcemap = require('./../public/source-map.js');
 var resolve = file => path.resolve(__dirname, file);
 var log = require('./log.js');
 
@@ -126,7 +126,7 @@ router.get('/showLog/:date', function(req, res) {
 			} else {
 				var _data = '[' + data + ']';
 				try {
-					res.render('./../public/template/logs.ejs', {
+					res.render('./../template/log.ejs', {
 						data: JSON.parse(_data)
 					});
 				}catch(e) {

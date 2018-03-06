@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "compression": "^1.7.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "moment": "^2.21.0",
+    "opn": "^5.2.0",
+    "request": "^2.83.0"
+  }
+}

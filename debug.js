@@ -29,8 +29,8 @@ const debug = {
 	init(user) {
 		this.user = user || {};
 		this.proxyWindowError()
-			.proxyConsoleError()
-			.evtMoniter();
+		.proxyConsoleError()
+		.evtMoniter();
 	},
 	// 用户操作跟踪
 	evtMoniter() {
@@ -167,8 +167,8 @@ const debug = {
 			} else {
                 //ie 独有 error 对象信息，try-catch 捕获到错误信息传过来，造成没有msg
                 if (errObj.name && errObj.message && errObj.description) {
-                    return {
-                    	msg: JSON.stringify(errObj)
+                	return {
+                		msg: JSON.stringify(errObj)
                 	};
                 }
                 return errObj;
@@ -180,24 +180,24 @@ const debug = {
     _get(url, cb) {
     	let xmlhttp;
     	if (window.XMLHttpRequest) {
-			xmlhttp=new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		if(xmlhttp) {
-			xmlhttp.onreadystatechange = function() {
-				if (xmlhttp.readyState == 4) {
-					if (xmlhttp.status == 200) {
-						if(cb && typeof cb === 'function') {
-							cb(xmlhttp.responseText)
-						}
-					}
-				}
-			};
-			xmlhttp.open("GET", url, true);
-			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send();
-		}
+    		xmlhttp=new XMLHttpRequest();
+    	} else if (window.ActiveXObject) {
+    		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    	}
+    	if(xmlhttp) {
+    		xmlhttp.onreadystatechange = function() {
+    			if (xmlhttp.readyState == 4) {
+    				if (xmlhttp.status == 200) {
+    					if(cb && typeof cb === 'function') {
+    						cb(xmlhttp.responseText)
+    					}
+    				}
+    			}
+    		};
+    		xmlhttp.open("GET", url, true);
+    		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    		xmlhttp.send();
+    	}
     },
     // 发送系统错误，来自window.onerror, console.error, 自定义错误;
     sendSystermReport(report) {
