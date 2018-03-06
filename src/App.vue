@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     hello() {
-      a
       alert('hello')
     }
   }
