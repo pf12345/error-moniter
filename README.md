@@ -50,67 +50,67 @@ errorData.errorMessage ＝ { // 错误日志信息
 
 ```
 debug = {
-    // 代理window.onerror方法，可在里面做其他事情，如上报错误信息
-    proxyWindowError() {
-		let self = this, f_error = window.onerror;
-		if(isPro) {
-			window.onerror = function(msg, url, line, col, error) {
-				let newError, _error = Object.assign({}, errorData.errorMessage, {
-					msg,
-					path: url,
-					line,
-					col,
-					error: newError = self.processError(error),
-					stack: newError ? newError.msg : '',
-					from: 'window onError'
-				});
+  // 代理window.onerror方法，可在里面做其他事情，如上报错误信息
+  proxyWindowError() {
+    let self = this, f_error = window.onerror;
+    if(isPro) {
+      window.onerror = function(msg, url, line, col, error) {
+        let newError, _error = Object.assign({}, errorData.errorMessage, {
+          msg,
+          path: url,
+          line,
+          col,
+          error: newError = self.processError(error),
+          stack: newError ? newError.msg : '',
+          from: 'window onError'
+        });
 
-				try {
-					self.sendSystermReport(_error); //发送报告到后台
-				} catch(e) {}
+        try {
+          self.sendSystermReport(_error); //发送报告到后台
+        } catch(e) {}
 
-				f_error.call(window, msg, url, line, col, error);
-				// console.log(_error);
-			}
-		} else {
-			window.onError = function(msg, url, line, col, error) {
-				console.log('windowError');
-				f_error.call(window, msg, url, line, col, error);
-			}
-		}
-		return this;
-	},
-	// 代理console.error方法，可在里面做其他事情，如上报错误信息
-	proxyConsoleError() {
-		var f_error = console.error, self = this;
-		if(isPro) {
-			console.error = function(error) {
-				let newError, _error = Object.assign({}, errorData.errorMessage, {
-					error: error.stack || error,
-					msg: (newError = self.processError(error)) && newError.msg,
-					col: newError.col,
-					line: newError.line,
-					stack: newError._orgMsg,
-					path: newError.target,
-					from: 'console error',
-					evtMoniter: self.evtMoniters
-				})
+        f_error.call(window, msg, url, line, col, error);
+        // console.log(_error);
+      }
+    } else {
+      window.onError = function(msg, url, line, col, error) {
+        console.log('windowError');
+        f_error.call(window, msg, url, line, col, error);
+      }
+    }
+    return this;
+  },
+  // 代理console.error方法，可在里面做其他事情，如上报错误信息
+  proxyConsoleError() {
+    var f_error = console.error, self = this;
+    if(isPro) {
+      console.error = function(error) {
+        let newError, _error = Object.assign({}, errorData.errorMessage, {
+          error: error.stack || error,
+          msg: (newError = self.processError(error)) && newError.msg,
+          col: newError.col,
+          line: newError.line,
+          stack: newError._orgMsg,
+          path: newError.target,
+          from: 'console error',
+          evtMoniter: self.evtMoniters
+        })
 
-				try {
-					// console.log(_error)
-					self.sendSystermReport(_error);
-				} catch(e) {}
+        try {
+          // console.log(_error)
+          self.sendSystermReport(_error);
+        } catch(e) {}
 
-				f_error.call(window, error);
-			};
-		} else {
-			console.error = function(error) {
-				console.log('consoleError');
-				f_error.call(window, error);
-			}
-		}
-		return this;
-	}
+        f_error.call(window, error);
+      };
+    } else {
+      console.error = function(error) {
+        console.log('consoleError');
+        f_error.call(window, error);
+      }
+    }
+    return this;
+  }
 }
 ```
 
@@ -118,35 +118,35 @@ debug = {
 
 ```
 processError(errObj) {
-		try {
-			if (errObj.stack) {
-				var url = errObj.stack.match("https?://[^\n]+");
-				url = url ? url[0] : "";
-				var rowCols = url.match(":(\\d+):(\\d+)");
-				if (!rowCols) {
-					rowCols = [0, 0, 0];
-				}
+  try {
+    if (errObj.stack) {
+      var url = errObj.stack.match("https?://[^\n]+");
+      url = url ? url[0] : "";
+      var rowCols = url.match(":(\\d+):(\\d+)");
+      if (!rowCols) {
+        rowCols = [0, 0, 0];
+      }
 
-				var stack = errObj.stack;
-				return {
-					msg: stack,
-					line: rowCols[1],
-					col: rowCols[2],
-					target: url.replace(rowCols[0], "").replace(')', ''),
-					_orgMsg : errObj.toString()
-				};
-			} else {
-                if (errObj.name && errObj.message && errObj.description) {
-                    return {
-                    	msg: JSON.stringify(errObj)
-                	};
-                }
-                return errObj;
-            }
-        } catch (err) {
-        	return errObj;
-        }
+      var stack = errObj.stack;
+      return {
+        msg: stack,
+        line: rowCols[1],
+        col: rowCols[2],
+        target: url.replace(rowCols[0], "").replace(')', ''),
+        _orgMsg : errObj.toString()
+      };
+    } else {
+      if (errObj.name && errObj.message && errObj.description) {
+        return {
+          msg: JSON.stringify(errObj)
+        };
+      }
+      return errObj;
     }
+  } catch (err) {
+    return errObj;
+  }
+}
 ```
 
 ### 对用户行为进行获取
