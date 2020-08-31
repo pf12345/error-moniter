@@ -155,44 +155,44 @@ processError(errObj) {
 
 ```
 // 用户操作跟踪
-	evtMoniter() {
-		if(EventTarget) {
-			let original_addEventListener = EventTarget.prototype.addEventListener, self = this;
-			EventTarget.prototype.addEventListener = function(type, listener, options) {
-				let that = this;
-				original_addEventListener.call(this, type, (function() {
-					return function(evt) {
-					   // 需要跟踪的用户事件
-					   // const evtMoniterTypes = ['click', 'tap', 'input']; 
-						if(evtMoniterTypes.indexOf(type) != -1) {
-							let attrs = {}, _attrs = {};
-							if(_attrs = that.attributes) {
-								for(let key in _attrs) {
-									if(_attrs[key]['value'] != undefined) {
-										attrs[_attrs[key]['name']] = _attrs[key]['value'];
-									}
-								}
-							}
-							self.evtMoniters.push({
-								node: {
-									url: that.baseURI, //错误页面地址
-									nodeName: that.nodeName, //事件节点名
-									attrs: attrs, //事件节点属性列表
-									textContent: that.textContent // 节点内容
-								},
-								type: type
-							});
-							if(self.evtMoniters.length > 10) {
-								self.evtMoniters.shift();
-							}
-						}
-						listener(evt);
-					}
-				})(), options);
-			}
-		}
-		return this;
-	}
+evtMoniter() {
+  if(EventTarget) {
+    let original_addEventListener = EventTarget.prototype.addEventListener, self = this;
+    EventTarget.prototype.addEventListener = function(type, listener, options) {
+      let that = this;
+      original_addEventListener.call(this, type, (function() {
+        return function(evt) {
+          // 需要跟踪的用户事件
+          // const evtMoniterTypes = ['click', 'tap', 'input']; 
+          if(evtMoniterTypes.indexOf(type) != -1) {
+            let attrs = {}, _attrs = {};
+            if(_attrs = that.attributes) {
+              for(let key in _attrs) {
+                if(_attrs[key]['value'] != undefined) {
+                  attrs[_attrs[key]['name']] = _attrs[key]['value'];
+                }
+              }
+            }
+            self.evtMoniters.push({
+              node: {
+                url: that.baseURI, //错误页面地址
+                nodeName: that.nodeName, //事件节点名
+                attrs: attrs, //事件节点属性列表
+                textContent: that.textContent // 节点内容
+              },
+              type: type
+            });
+            if(self.evtMoniters.length > 10) {
+              self.evtMoniters.shift();
+            }
+          }
+          listener(evt);
+        }
+      })(), options);
+    }
+  }
+  return this;
+}
 ```
 
 ### 后台处理保存日志数据
@@ -202,8 +202,8 @@ processError(errObj) {
 ```
 var smc = new sourcemap.SourceMapConsumer(fs.readFileSync(resolve(mapPath),'utf8'));
 var ret = smc.originalPositionFor({
-	line: line,
-	column: column
+  line: line,
+  column: column
 });
 report.ret = ret;
 ```
