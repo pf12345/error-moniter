@@ -31,15 +31,15 @@ npm run dev
 
 ```
 errorData.errorMessage ＝ { // 错误日志信息
-	msg: '',
-	url: '', // 错误来源页面url
-	line: '', // 错误行数
-	col: '', // 错误列数
-	stack: '',
-	from: '', // 错误来源
-	"navigator.userAgent": '', //浏览器信息
-	ret: {}, // 解析source map后原始准确定位数据
-	evtMoniter: [] //用户行为保存数组,保存最近10次行为操作
+  msg: '',
+  url: '', // 错误来源页面url
+  line: '', // 错误行数
+  col: '', // 错误列数
+  stack: '',
+  from: '', // 错误来源
+  "navigator.userAgent": '', //浏览器信息
+  ret: {}, // 解析source map后原始准确定位数据
+  evtMoniter: [] //用户行为保存数组,保存最近10次行为操作
 } 
 
 ```
