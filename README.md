@@ -6,7 +6,11 @@
 npm install
 
 npm run dev
+
+npm run start
 ```
+访问：http://localhost:8010/webErrorLog/showLog/2020-09-04 
+注：其中“2020-09-04”为日志收集时间
 
 ### 背景
 
