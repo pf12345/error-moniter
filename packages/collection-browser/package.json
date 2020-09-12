@@ -1,0 +1,26 @@
+{
+  "name": "@scalpel/monitor-collection-browser",
+  "version": "0.0.1",
+  "description": "monitor collection",
+  "main": "index.js",
+  "module": "dist/shared.esm-bundler.js",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "buildOptions": {
+    "name": "collectionBrowserError",
+    "formats": [
+      "cjs",
+      "global",
+      "browser"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "monitor"
+  ]
+}

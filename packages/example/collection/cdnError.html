@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="/packages/example/static/reset.css">
+<script src="/packages/collection-browser/dist/collection-browser.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<h3>CDN Error</h3>
+<div id="app">
+  <img :src="imgUrl" alt="error test">
+  <div v-for="item in errorList">
+    <h4 class="title">错误日志</h4>
+    <pre>
+      <code>{{item}}</code>
+    </pre>
+  </div>
+</div>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        errorList: [],
+        imgUrl: '',
+        scriptUrl: ''
+      }
+    },
+    mounted() {
+      collectionBrowserError.initCollection({
+        user: {
+          name: '简睿',
+          uid: '11032'
+        }
+      })
+      collectionBrowserError.collectionCdnError((error) => {
+        this.errorList.push(error);
+      })
+      this.imgUrl = 'https://cdn.wrongwrong.com/gggg@2x1.png';
+
+      // 测试js异常
+      const scriptNode = document.createElement('script');
+      scriptNode.src = 'https://cdn.jsdelivr.net/npm/vue123';
+      document.body.appendChild(scriptNode);
+
+      const linkNode = document.createElement('link');
+      linkNode.rel = 'stylesheet';
+      linkNode.href =  'https://cdn.jsdelivr.net/npm/vue123234';
+      document.head.appendChild(linkNode);
+    }
+  })
+</script>

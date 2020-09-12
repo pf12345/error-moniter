@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="/packages/example/static/reset.css">
+<script src="/packages/collection-browser/dist/collection-browser.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<h3>Window Error</h3>
+<div id="app">
+  <div v-for="item in errorList">
+    <h4 class="title">错误日志</h4>
+    <pre>
+      <code>{{item}}</code>
+    </pre>
+  </div>
+</div>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        errorList: []
+      }
+    },
+    mounted() {
+      collectionBrowserError.initCollection({
+        user: {
+          name: '简睿',
+          uid: '11032'
+        }
+      })
+      collectionBrowserError.collectionWindowError((error) => {
+        this.errorList.push(error);
+      })
+    }
+  })
+</script>
+<script>
+  setTimeout(() => {
+    const a = 1;
+    a = 2;
+  }, 300)
+
+  setTimeout(() => {
+    var b = 2;
+    b.split(',');
+  }, 800)
+</script>

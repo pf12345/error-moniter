@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/packages/example/static/reset.css">
+<script src="/packages/collection-browser/dist/collection-browser.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<h3>PERFORMANCE Error</h3>
+<div id="app">
+  <div v-for="item in errorList">
+    <h4 class="title">错误日志</h4>
+    <pre>
+      <code>{{item}}</code>
+    </pre>
+  </div>
+</div>
+<div>this is text</div>
+<img src="https://cdn.wrongwrong.com/gggg@2x1.png" alt="">
+<script>
+  const instance = new Vue({
+    el: '#app',
+    data() {
+      return {
+        errorList: []
+      }
+    },
+    mounted() {
+
+    }
+  })
+
+  collectionBrowserError.initCollection({
+    user: {
+      name: '简睿',
+      uid: '11032'
+    }
+  })
+  collectionBrowserError.collectionPerformace((error) => {
+    instance.errorList.push(error);
+  })
+</script>
